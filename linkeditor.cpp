@@ -29,4 +29,6 @@ int main (int argc, int argv[]) {
         }
     }
 
+    // need to check for inside the file to see if the contents are correct 
+
 }
