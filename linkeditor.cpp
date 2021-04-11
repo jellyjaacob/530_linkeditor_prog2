@@ -14,7 +14,7 @@ using namespace std;
 string ctrl_sect;
 
 
-int main (int argc, int argv[]) {
+int main (int argc, char* argv[]) {
     
     // format for command line: led first.sl second.sl
 
@@ -29,9 +29,9 @@ int main (int argc, int argv[]) {
     string inputFile = argv[fileNum]; // will hold the inputFile
 
     // loops through a for loop to check the amount of arguments following led are of <filename>.sl
-    for (fileNum = 1; fileNum < argc; i++) {
+    for (fileNum = 1; fileNum < argc; fileNum++) {
         int exitPos = inputFile.find_last_of(".");
-        if (exitPos.substr(exitPos + 1) != "sl") {
+        if (inputFile.substr(exitPos + 1) != "sl") {
             std::cout << "Type of file is incorrect, we need .sl file" << endl; 
             exit(1);
         }
@@ -41,13 +41,22 @@ int main (int argc, int argv[]) {
 
 }
 
-void readListingFile() {
+void readListingFile(char* argv[]) {
     
-    // read listing file
-    // implementation: search the file for the first instance of the location of 0000, after finding that find the word following
-    // it and instantiate it as the ctrl_sect name
-    // ifstream ctrl_sect()
+    ifstream listFile(argv[0], ios::in);    // opens file
+    string startPos;
 
+    // find starting point of 0000, after read the next string and set that as a control section
+    getline(listFile, startPos);
+    
+    
+
+
+}
+
+void createExecutable() {
+
+    // creates the executable file (object code)
 
 }
 
@@ -59,7 +68,7 @@ void estabFormat() {
     vector <string> estab_ctrlsec;
 
     for (int i=0;i<estab_ctrlsectcount; i++) {
-        // estab_ctrlsec[i].insert(ctrl_sect + \t + \t + object code)
+        estab_ctrlsec[i].insert(ctrl_sect + \t + \t + object code)
     }
 
 
@@ -70,6 +79,10 @@ void estabFormat() {
     for (int i=0;i< estab_symbolcount; i++) {
         // estab_symbol[i].insert( symbol + \t + location of symbol + \t);
     }
+
+}
+
+void printEstab() {
 
 }
 
