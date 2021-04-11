@@ -44,12 +44,17 @@ int main (int argc, char* argv[]) {
 void readListingFile(char* argv[]) {
     
     ifstream listFile(argv[0], ios::in);    // opens file
-    string startPos;
+    string content;
 
-    // find starting point of 0000, after read the next string and set that as a control section
-    getline(listFile, startPos);
+    while(listFile >> content) {
+        if(content == "0000") {
+            listFile >> content;
+            cout << content << endl;    // prints to output
+            break;
+        }
+    }
     
-    
+
 
 
 }
