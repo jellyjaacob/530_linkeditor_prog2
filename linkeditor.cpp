@@ -53,10 +53,7 @@ void readListingFile(char* argv[]) {
             break;
         }
     }
-    
-
-
-
+   
 }
 
 void createExecutable() {
@@ -66,24 +63,22 @@ void createExecutable() {
 }
 
 // methods to be called inside main
-void estabFormat() {
+void estabFormat(char* argv[]) {
 
-    string ctrl_sect;
-    int estab_ctrlsectcount = 0;
-    vector <string> estab_ctrlsec;
+    string content;        // Save the word we are reading in this variable
 
-    for (int i=0;i<estab_ctrlsectcount; i++) {
-        estab_ctrlsec[i].insert(ctrl_sect + \t + \t + object code)
+    cout << argv[2]<< '\n';    // checking to see what the file is named
+    cout << " " << endl;
+
+
+    ifstream listingFile;      // Open the listing file
+    ofstream ESTAB;            // Open a Estab to write in
+
+    listingFile.open(argv[2]);
+    ESTAB.open("Estab.st");
     }
 
-
-    int estab_symbolcount = 0;
-    // format the estab
-
-    vector <string> estab_symbol;
-    for (int i=0;i< estab_symbolcount; i++) {
-        // estab_symbol[i].insert( symbol + \t + location of symbol + \t);
-    }
+    ESTAB << "It worked baby" <<  endl;       //We write into a file named Estab.st
 
 }
 
