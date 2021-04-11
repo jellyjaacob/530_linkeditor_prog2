@@ -44,15 +44,41 @@ int main (int argc, char* argv[]) {
 void readListingFile(char* argv[]) {
     
     ifstream listFile(argv[0], ios::in);    // opens file
-    string content;
+    string sectionFinder;
+    string ctrl_sect_name;
 
-    while(listFile >> content) {
-        if(content == "0000") {
-            listFile >> content;
-            cout << content << endl;    // prints to output
+    while(listFile >> sectionFinder) {
+        if(sectionFinder == "0000") {
+            listFile >> sectionFinder;        // finds next string after 0000, which should be ctrl section name
+            ctrl_sect_name = sectionFinder;   // sets the control section 
             break;
         }
     }
+
+    // find the EXTDEF
+    string symbolLoc = "EXTDEF";
+    
+    vector <string> symbols;
+    string content;
+
+    // find the line where string, "EXTDEF" is located, find where in that string EXTDEF is located and take the strings after that
+    // and put it into an array or something which will be the Symbols
+    
+    getline(listFile, content);    // assigns all of listfile into content
+    content.find_first_of(symbolLoc);   // content = EXTDEF
+
+    while (listFile >> content) {
+        if(content == symbolLoc) {
+            listFile >> content;
+            symbols.insert(content);    // vector add the content
+        }
+        if(content == "0000") {     // end of line
+            break;
+        }
+    }
+
+    // finding address of symbol for estab
+    // find the last instance of the symbol, get line of that last instance, get first string of that line = address
    
 }
 
