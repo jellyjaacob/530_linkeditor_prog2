@@ -6,7 +6,7 @@
 #include <string>
 #include <map>
 #include <exception>
-
+#include <sstream>
 
 using namespace std;
 
@@ -36,9 +36,6 @@ int main (int argc, char* argv[]) {
             exit(1);
         }
     }
-
-    // need to check for inside the file to see if the contents are correct
-
 }
 
 void readListingFile(char* argv[]) {
@@ -49,7 +46,7 @@ void readListingFile(char* argv[]) {
 
     while(listFile >> sectionFinder) {
         if(sectionFinder == "0000") {
-            listFile >> sectionFinder;        // finds next string after 0000, which should be ctrl section name
+            listFile >> sectionFinder;        // finds first instance of 0000, the next string after = ctrl sect
             ctrl_sect_name = sectionFinder;   // sets the control section 
             break;
         }
@@ -57,9 +54,8 @@ void readListingFile(char* argv[]) {
 
     // find the EXTDEF
     string symbolLoc = "EXTDEF";
-    
     vector <string> symbols;
-    string content;
+    string content;                 // placeholder to hold 
 
     // find the line where string, "EXTDEF" is located, find where in that string EXTDEF is located and take the strings after that
     // and put it into an array or something which will be the Symbols
@@ -77,14 +73,80 @@ void readListingFile(char* argv[]) {
         }
     }
 
-    // finding address of symbol for estab
-    // find the last instance of the symbol, get line of that last instance, get first string of that line = address
-   
+    string extdefwords;
+    vector<string> separated;
+
+    stringstream s_stream(extdefwords);
+
+    while(s_stream.good()){
+        string substr;
+        getline(s_stream, substr, ','); //get first string delimited by comma
+        separated.push_back(substr);
+    }
+    for(int i = 0; i< separated.size(); i++) {    //print all splitted strings
+        cout << separated.at(i) << endl;
+    }
+
+    string lookingfordef;      // now we are looking for the definitions in the code ( what we are currently at in regards to place when we are reading the words
+
+    int num = 0;       // Will verify that the string we converted to number is actually a number
+
+    stringstream ss;
+
+    prevcontent = extdefwords;                    // So considering where we are in the file, this will take the current thing we are reading, once the while loop
+                                                  // we will be reading the next thing
+    int i = 0;   // index for vector
+
+    while (listingFile >> lookingfordef) {
+        stringstream ss;
+        ss << prevcontent;                  // so first we push our prev word to ss to convert to a number
+        ss >> num;                          // then return that number into num
+                                            // keep in mind that if the word we converted to a number is not a number then we will have 0 in "num"
+        if (num != 0 && lookingfordef == separated.at(i)) {
+            addressofseparated.push_back(prevcontent);
+            i = i + 1;
+            num = 0;
+            if (separated.size() == i) {
+                break;
+            }
+        }
+        prevcontent = lookingfordef;
+    }
+
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    for (int j = 0; j < addressofseparated.size(); j++) {    //print all splitted strings
+        cout << addressofseparated.at(j) << endl;
+    }
+
+
+    for (int j = 0; j < addressofseparated.size(); j++) {    //print all splitted strings
+        cout << "This is vector that holds the extdef, each in its own cell, this is at index " << j << "   " << separated.at(j) << endl;
+        cout << "This is vector that holds the address of extdef, each in its own cell, this is at index " << j << "      " << addressofseparated.at(j) << endl;
+
+    }
+
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    
+ 
 }
 
 void createExecutable() {
 
     // creates the executable file (object code)
+
+    cout << "H" + ctrl_sect_name + //END OF LISTING FILE;
+
+
 
 }
 
@@ -105,10 +167,6 @@ void estabFormat(char* argv[]) {
     }
 
     ESTAB << "It worked baby" <<  endl;       //We write into a file named Estab.st
-
-}
-
-void printEstab() {
 
 }
 
