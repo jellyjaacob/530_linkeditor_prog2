@@ -46,6 +46,7 @@ void readListingFile(char* argv[]) {
     ofstream ESTAB;            
     listFile.open(argv[2]);
     ESTAB.open("Estab.st");
+
     string sectionFinder;
     string ctrl_sect_name;
     
@@ -98,9 +99,13 @@ void readListingFile(char* argv[]) {
         prevcontent = lookingfordef;
     }
 
-    // addresses of each split string
-    for (int j = 0; j < addressofseparated.size(); j++) {    //print all splitted strings
-        cout << addressofseparated.at(j) << endl;
+    // finding =C'EOF' so that we can find the end of the file and its length
+    string look_for_length;
+    string end_variable;
+    string length_of_ls;
+
+    while (listFile >> look_for_length) {
+        
     }
 
     // formatting ESTAB
