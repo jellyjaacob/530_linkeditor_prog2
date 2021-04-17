@@ -40,42 +40,27 @@ int main (int argc, char* argv[]) {
 
 void readListingFile(char* argv[]) {
     
-    ifstream listFile(argv[0], ios::in);    // opens file
+    ifstream listFile;    // opens file
+    
+    // creating ESTAB 
+    ofstream ESTAB;            
+    listFile.open(argv[2]);
+    ESTAB.open("Estab.st");
     string sectionFinder;
     string ctrl_sect_name;
-
+    
+    // finds 1st instance of 0000, next string = ctrl sect
     while(listFile >> sectionFinder) {
         if(sectionFinder == "0000") {
-            listFile >> sectionFinder;        // finds first instance of 0000, the next string after = ctrl sect
-            ctrl_sect_name = sectionFinder;   // sets the control section 
+            listFile >> sectionFinder;     
+            ctrl_sect_name = sectionFinder;   
             break;
         }
     }
 
-    // find the EXTDEF
-    string symbolLoc = "EXTDEF";
-    vector <string> symbols;
-    string content;                 // placeholder to hold 
-
-    // find the line where string, "EXTDEF" is located, find where in that string EXTDEF is located and take the strings after that
-    // and put it into an array or something which will be the Symbols
-    
-    getline(listFile, content);    // assigns all of listfile into content
-    content.find_first_of(symbolLoc);   // content = EXTDEF
-
-    while (listFile >> content) {
-        if(content == symbolLoc) {
-            listFile >> content;
-            symbols.insert(content);    // vector add the content
-        }
-        if(content == "0000") {     // end of line
-            break;
-        }
-    }
-
+    // finds 1st instance of "EXTDEF"
     string extdefwords;
     vector<string> separated;
-
     stringstream s_stream(extdefwords);
 
     while(s_stream.good()){
@@ -87,24 +72,24 @@ void readListingFile(char* argv[]) {
         cout << separated.at(i) << endl;
     }
 
-    string lookingfordef;      // now we are looking for the definitions in the code ( what we are currently at in regards to place when we are reading the words
-
-    int num = 0;       // Will verify that the string we converted to number is actually a number
-
+    string lookingfordef;       // now we are looking for the definitions in the code ( what we are currently at in regards to place when we are reading the words
+    int num = 0;                // Will verify that the string we converted to number is actually a number
     stringstream ss;
-
+    string prevcontent;
     prevcontent = extdefwords;                    // So considering where we are in the file, this will take the current thing we are reading, once the while loop
-                                                  // we will be reading the next thing
+    vector<string> addressofseparated;
     int i = 0;   // index for vector
 
-    while (listingFile >> lookingfordef) {
+
+    // searches listFile for definitions after "EXTDEF"
+    while (listFile >> lookingfordef) {
         stringstream ss;
         ss << prevcontent;                  // so first we push our prev word to ss to convert to a number
         ss >> num;                          // then return that number into num
                                             // keep in mind that if the word we converted to a number is not a number then we will have 0 in "num"
         if (num != 0 && lookingfordef == separated.at(i)) {
             addressofseparated.push_back(prevcontent);
-            i = i + 1;
+            i++;
             num = 0;
             if (separated.size() == i) {
                 break;
@@ -113,60 +98,16 @@ void readListingFile(char* argv[]) {
         prevcontent = lookingfordef;
     }
 
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
+    // addresses of each split string
     for (int j = 0; j < addressofseparated.size(); j++) {    //print all splitted strings
         cout << addressofseparated.at(j) << endl;
     }
 
-
-    for (int j = 0; j < addressofseparated.size(); j++) {    //print all splitted strings
-        cout << "This is vector that holds the extdef, each in its own cell, this is at index " << j << "   " << separated.at(j) << endl;
-        cout << "This is vector that holds the address of extdef, each in its own cell, this is at index " << j << "      " << addressofseparated.at(j) << endl;
-
+    // formatting ESTAB
+    ESTAB << ctrl_sect_name << "\t\t" << "0000" << endl;
+    for (int j=0;j<addressofseparated.size();j++) {
+        ESTAB << "\t" << separated.at(j) << "\t" << addressofseparated.at(j) << endl;
     }
-
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
-    cout << " " << endl;
-    
- 
-}
-
-void createExecutable() {
-
-    // creates the executable file (object code)
-
-    cout << "H" + ctrl_sect_name + //END OF LISTING FILE;
-
-
-
-}
-
-// methods to be called inside main
-void estabFormat(char* argv[]) {
-
-    string content;        // Save the word we are reading in this variable
-
-    cout << argv[2]<< '\n';    // checking to see what the file is named
-    cout << " " << endl;
-
-
-    ifstream listingFile;      // Open the listing file
-    ofstream ESTAB;            // Open a Estab to write in
-
-    listingFile.open(argv[2]);
-    ESTAB.open("Estab.st");
-    }
-
-    ESTAB << "It worked baby" <<  endl;       //We write into a file named Estab.st
 
 }
 
