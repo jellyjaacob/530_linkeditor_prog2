@@ -329,19 +329,45 @@ void createObjFile(char* argv[]) {
     // names the executable object file
     execObjFile.open(ctrl_sect_name + ".obj");
 
+
     // finds 1st instance of "EXTDEF"
     string extdefwords;
     vector<string> ext_def_variables;
     stringstream s_stream(extdefwords);
+
+
+    while (listingFile >> extdefwords){      //This will get all the variables that are extdef into one string word
+        if ( extdefwords == "EXTDEF"){
+            listingFile >> extdefwords;   // Since we stopped at EXTDET, we need the next word which should be the definitions
+            break;
+        }
+    }
 
     while (s_stream.good()) {
         string substr;
         getline(s_stream, substr, ','); //get first string delimited by comma
         ext_def_variables.push_back(substr);
     }
-    for (int i = 0; i < ext_def_variables.size(); i++) {    //print all splitted strings
-        cout << ext_def_variables.at(i) << endl;
+
+    // finds 1st instance of "EXTREF"
+    string extrefwords;
+    vector<string> ext_ref_variables;
+    stringstream s_stream1(extrefwords);
+
+
+    while (listingFile >> extrefwords){      //This will get all the variables that are extref into one string word
+        if ( extdefwords == "EXTREF"){
+            listingFile >> extrefwords;   // Since we stopped at EXTREF, we need the next word which should be the references
+            break;
+        }
     }
+
+    while (s_stream1.good() {
+        string substr;
+        getline(s_stream1, substr, ',');
+        ext_ref_variables.push_back(substr);
+    }
+
 
     string lookingfordef;       // now we are looking for the definitions in the code ( what we are currently at in regards to place when we are reading the words
     int num = 0;                // Will verify that the string we converted to number is actually a number
@@ -390,8 +416,9 @@ void createObjFile(char* argv[]) {
     }
 
     // EXTREF = R + name
-
-
+    for (int i = 0; i < ext_ref_variables.max_size(); i++) {
+        execObjFile << "D " << ext_ref_variables.at(i) << " ";
+    }
 
 }
 
