@@ -7,11 +7,13 @@
 #include <map>
 #include <exception>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
 // global variables
-string ctrl_sect;
+string ctrl_sect_address = "000000";
+string ctrl_sect_length;
 
 
 int main (int argc, char* argv[]) {
@@ -38,7 +40,7 @@ int main (int argc, char* argv[]) {
     }
 }
 
-void readListingFile(char* argv[]) {
+void createEstab(char* argv[]) {
     
     ifstream listFile;    // opens file
     
@@ -99,14 +101,15 @@ void readListingFile(char* argv[]) {
         prevcontent = lookingfordef;
     }
 
-    // finding =C'EOF' so that we can find the end of the file and its length
-    string look_for_length;
-    string end_variable;
-    string length_of_ls;
+    string lastLine, length, temp;
+    string three = "03";
 
-    while (listFile >> look_for_length) {
-
+    while (getline(listFile, lastLine)) {
     }
+    ss << lastLine;
+    ss >> temp;
+
+    length = hex_addition(temp,three);
 
     // formatting ESTAB
     ESTAB << ctrl_sect_name << "\t" << "\t" << "000000" << endl;  // need to include address
@@ -288,6 +291,92 @@ string hex_addition(string a, string b)
 	return ans;
 }
 
+void createObjFile(char* argv[]) {
+
+    ifstream listingFile;
+    ofstream execObjFile;
+    
+    listingFile.open(argv[2]);
+
+    string ctrl_sect_name;
+    string sectionFinder;
+
+    // finds 1st instance of 0000, next string = ctrl sect
+    while(listingFile >> sectionFinder) {
+        if(sectionFinder == "0000") {
+            listingFile >> sectionFinder;     
+            ctrl_sect_name = sectionFinder;   
+            break;
+        }
+    }
+
+    // names the executable object file
+    execObjFile.open(ctrl_sect_name + ".obj");
+
+    // finds 1st instance of "EXTDEF"
+    string extdefwords;
+    vector<string> ext_def_variables;
+    stringstream s_stream(extdefwords);
+
+    while(s_stream.good()){
+        string substr;
+        getline(s_stream, substr, ','); //get first string delimited by comma
+        ext_def_variables.push_back(substr);
+    }
+    for(int i = 0; i< ext_def_variables.size(); i++) {    //print all splitted strings
+        cout << ext_def_variables.at(i) << endl;
+    }
+
+    string lookingfordef;       // now we are looking for the definitions in the code ( what we are currently at in regards to place when we are reading the words
+    int num = 0;                // Will verify that the string we converted to number is actually a number
+    stringstream ss;
+    string prevcontent;
+    prevcontent = extdefwords;                    // So considering where we are in the file, this will take the current thing we are reading, once the while loop
+    vector<string> addr_ext_def;
+    int i = 0;   // index for vector
 
 
+    // searches listingFile for definitions after "EXTDEF"
+    while (listingFile >> lookingfordef) {
+        stringstream ss;
+        ss << prevcontent;                  // so first we push our prev word to ss to convert to a number
+        ss >> num;                          // then return that number into num
+                                            // keep in mind that if the word we converted to a number is not a number then we will have 0 in "num"
+        if (num != 0 && lookingfordef == ext_def_variables.at(i)) {
+            addr_ext_def.push_back(prevcontent);
+            i++;
+            num = 0;
+            if (ext_def_variables.size() == i) {
+                break;
+            }
+        }
+        prevcontent = lookingfordef;
+    }
+
+    string lastLine, temp;
+    string three = "03";
+
+    while (getline(listingFile, lastLine)) {
+    }
+    ss << lastLine;
+    ss >> temp;
+
+    ctrl_sect_address = hex_addition(ctrl_sect_address, "actual location");
+    ctrl_sect_length = hex_addition(temp,three);
+
+
+    // Format = H + ctrl sect + location + length
+    execObjFile << "H" << ctrl_sect_name << ctrl_sect_address << ctrl_sect_length << endl;
+
+    // EXTDEF = D + name + address 
+    for (int i = 0; i < ext_def_variables.max_size(); i++) {
+        execObjFile << "D " << ext_def_variables.at(i) << " " << addr_ext_def.at(i) << " ";
+    }
+
+    // EXTREF = R + name
+
+
+
+
+}
 
