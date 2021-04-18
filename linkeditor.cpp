@@ -11,11 +11,9 @@
 
 using namespace std;
 
-// global variables
-string ctrl_sect;
-
-string address = "0000";
-
+// global variables and changes made here
+string ctrl_sect_address = "000000";
+string ctrl_sect_length;
 
 
 // Map for converting hexadecimal values to decimal
@@ -120,8 +118,6 @@ string hex_addition(string a, string b)
 	// Return the answer
 	return ans;
 }
-
-
 
 // methods to be called inside main
 void estabFormat(char** argv, int argc) {
@@ -228,7 +224,7 @@ void estabFormat(char** argv, int argc) {
         if (num != 0     &&  lookingfordef == separated.at(i)             ){
 
 
-            added = hex_addition(prevcontent, address );
+            added = hex_addition(prevcontent, ctrl_sect_address );
 
             addressofseparated.push_back(added);
 
@@ -283,7 +279,7 @@ void estabFormat(char** argv, int argc) {
     // FINALLY WE ARE FORMATTING IT OUT INTO THE ESTAB ********************************************************************************************************
     ESTAB << setprecision(1) << fixed;
 
-    ESTAB <<   titleblock << "\t\t" << setfill('0') << setw(6)   << address << "\t" << setfill('0') << setw(6)   << length<<endl;
+    ESTAB <<   titleblock << "\t\t" << setfill('0') << setw(6)   << ctrl_sect_address << "\t" << setfill('0') << setw(6)   << length<<endl;
 
 
     for(int j = 0; j<addressofseparated.size(); j++) {    //print all splitted strings
@@ -293,7 +289,7 @@ void estabFormat(char** argv, int argc) {
 
     //*******************************************************************************************************************************************************
 
-    address = length ;
+    ctrl_sect_address = length ;
 
     separated.clear();
 
@@ -400,26 +396,13 @@ void createObjFile(char* argv[]) {
 }
 
 
-
-
 int main (int argc, char* argv[]) {
 
     // Move this portion to estabFormate method
     //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
     estabFormat(argv, argc);
-
-
-
-
-
 
 
 
@@ -445,16 +428,9 @@ int main (int argc, char* argv[]) {
 
 
 
-
-
     // need to check for inside the file to see if the contents are correct
 
 }
-
-
-
-
-
 
 
 
@@ -467,48 +443,6 @@ void readListingFile() {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //------------------------------------------------------------------------------------------------
