@@ -33,111 +33,45 @@ string hexConvert (int a) {
 
 }
 
+int decimalConvert(string ko){
+    stringstream ss8;
 
+    int convertedDecimal;
 
-
-// Map for converting hexadecimal values to decimal
-map<char, int> hex_to_dec()
-{
-	// Map the values to decimal values
-	map<char, int> original_hex { { '0', 0 }, { '1', 1 },
-					{ '2', 2 }, { '3', 3 },
-					{ '4', 4 }, { '5', 5 },
-					{ '6', 6 }, { '7', 7 },
-					{ '8', 8 }, { '9', 9 },
-					{ 'A' , 10 }, { 'B', 11 },
-					{ 'C', 12 }, { 'D' , 13 },
-					{ 'E', 14 }, { 'F', 15 } };
-
-	return original_hex;
-}
-
-// Map for converting decimal values to hexadecimal
-map<int, char> dec_to_hex()
-{
-	// Map the values to the
-	// hexadecimal values
-	map<int, char> original_hex { { 0, '0' }, { 1, '1' },
-					{ 2, '2' }, { 3, '3' },
-					{ 4, '4' }, { 5, '5' },
-					{ 6, '6' }, { 7, '7' },
-					{ 8, '8' }, { 9, '9' },
-					{ 10, 'A' }, { 11, 'B' },
-					{ 12, 'C' }, { 13, 'D'},
-					{ 14, 'E' }, { 15, 'F' } };
-
-	return original_hex;
+    ss8 << std::hex << ko;
+    ss8 >> convertedDecimal;
+    ss8.clear();
+    return convertedDecimal;
 }
 
 
-string hex_addition(string a, string b)
-{
-	map<char, int> m = hex_to_dec();
-	map<int, char> k = dec_to_hex();
+int addDecimal(int a, int b){
+    int added;
 
-	// check which is bigger
-	if (a.length() < b.length())
-		swap(a, b);
+    added = a + b;
 
-	// Store length of both strings
-	int l1 = a.length(), l2 = b.length();
-
-	string ans = "";
-
-	// Initialize carry as zero
-	int carry = 0, i, j;
-
-	// Traverse till second string
-	// get traversal completely
-	for (i = l1 - 1, j = l2 - 1; j >= 0; i--, j--) {
-
-		// Decimal value of element at a[i]
-		// Decimal value of element at b[i]
-		int sum = m[a[i]] + m[b[j]] + carry;
-
-		// Hexadecimal value of sum%16
-		// to get addition bit
-		int addition_bit = k[sum % 16];
-
-		// Add addition_bit to answer
-		ans.push_back(addition_bit);
-
-		// Update carry
-		carry = sum / 16;
-	}
-
-	// Traverse remaining element
-	// of string a
-	while (i >= 0) {
-
-		// Decimal value of element
-		// at a[i]
-		int sum = m[a[i]] + carry;
-
-		// Hexadecimal value of sum%16
-		// to get addition bit
-		int addition_bit = k[sum % 16];
-
-		// Add addition_bit to answer
-		ans.push_back(addition_bit);
-
-		// Update carry
-		carry = sum / 16;
-		i--;
-	}
-
-	// Check if still carry remains
-	if (carry) {
-		ans.push_back(k[carry]);
-	}
-
-	// Reverse the final string
-	// for desired output
-	reverse(ans.begin(), ans.end());
-
-	// Return the answer
-	return ans;
+    return added;
 }
+
+
+string hex_addition(string a, string b){
+    string addedHex;
+    int addedDec;
+    int c;
+    int d;
+
+    c = decimalConvert(a);
+    d = decimalConvert(b);
+
+    addedDec = c+d;
+
+    addedHex = hexConvert(addedDec);
+
+    return addedHex;
+
+}
+
+
 
 void estabFormat(char** argv, int argc) {
 
@@ -568,6 +502,9 @@ void createObjFile(char* argv[], int argc) {
 
 int main (int argc, char* argv[]) {
 
+
+    
+
     estabFormat(argv, argc);
 
     createObjFile(argv, argc);
@@ -595,3 +532,4 @@ int main (int argc, char* argv[]) {
     }
 
 }
+
