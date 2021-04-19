@@ -425,9 +425,114 @@ void createObjFile(char* argv[]) {
 
 int main (int argc, char* argv[]) {
 
-    // Move this portion to estabFormate method
-    //-------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	
+    
+    //********************************************************************************************************************************************
+	
+	ifstream opcode;
+    stringstream ss;
+    opcode.open(argv[2]);
 
+    string first;
+    int counter = 0;
+
+    string line;
+    string word;
+
+    vector<string> opcode_nums;
+
+
+
+    string theline;
+
+    //getline(opcode, line);
+
+
+
+
+   // cout << opcode_nums.at(0) << endl;
+
+
+
+    while(opcode >> first){
+
+        if (first == "FIRST"){
+            break;
+        }
+    }
+
+
+    getline(opcode, line);
+    ss <<line;
+    while(ss >> word){
+        }
+    opcode_nums.push_back(word);
+
+
+
+    while(getline(opcode, line)){
+
+    //opcode_nums.push_back(line);
+
+    //cout << line << endl;
+
+    stringstream ss;
+
+    ss << line;
+
+    //ss >> word;
+
+
+        while(ss >> word){
+         counter = counter +1;
+            //cout << word.size() << endl;
+        }
+
+        if(counter > 3 && word.size() >=6){
+            opcode_nums.push_back(word);
+        }
+
+        counter = 0;
+                                                
+
+    }
+
+
+
+    for (int p = 0; p < opcode_nums.size() ; p++){
+        cout << opcode_nums.at(p) << endl;
+    }
+	
+//  ********************************************************************************************************************************************************
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
     estabFormat(argv, argc);
 
