@@ -292,6 +292,7 @@ void createObjFile(char* argv[]) {
     int num = 0;                // Will verify that the string we converted to number is actually a number
     stringstream ss;
     string prevcontent;
+    string added;
     prevcontent = extdefwords;                    // So considering where we are in the file, this will take the current thing we are reading, once the while loop
     vector<string> addr_ext_def;
     int i = 0;   // index for vector
@@ -304,6 +305,8 @@ void createObjFile(char* argv[]) {
         ss >> num;                          // then return that number into num
                                             // keep in mind that if the word we converted to a number is not a number then we will have 0 in "num"
         if (num != 0 && lookingfordef == ext_def_variables.at(i)) {
+
+            added = hex_addition(prevcontent, ctrl_sect_address_obj);
             addr_ext_def.push_back(prevcontent);
             i++;
             num = 0;
@@ -391,6 +394,10 @@ void createObjFile(char* argv[]) {
     for (int i = 0; i < ext_ref_variables.max_size(); i++) {
         execObjFile << "D " << ext_ref_variables.at(i) << " ";
     }
+
+    ctrl_sect_address_obj = length;
+    ext_def_variables.clear();
+    addr_ext_def.clear();
 
 }
 
