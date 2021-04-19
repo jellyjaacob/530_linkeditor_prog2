@@ -419,28 +419,7 @@ int main (int argc, char* argv[]) {
         }
     }
 
-
-
-    // need to check for inside the file to see if the contents are correct
-
 }
-
-
-
-void readListingFile() {
-
-    // read listing file
-    // implementation: search the file for the first instance of the location of 0000, after finding that find the word following
-    // it and instantiate it as the ctrl_sect name
-    // ifstream ctrl_sect()
-
-
-}
-
-
-//------------------------------------------------------------------------------------------------
-
-
 
 
 
